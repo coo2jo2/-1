@@ -9,7 +9,7 @@
             font-family: 'Apple SD Gothic Neo', sans-serif;
             background-color: #f7f9fc;
             text-align: center;
-            padding: 60px 20px; /* 위아래 여백 확대 */
+            padding: 40px 15px;
             margin: 0;
             user-select: none;
             display: flex;
@@ -19,11 +19,11 @@
             box-sizing: border-box;
         }
 
-        /* 제목 스타일 대폭 확대 */
+        /* 제목 스타일 (유지) */
         h1 {
             color: #333;
-            margin-bottom: 60px; /* 제목 아래 여백 확대 */
-            font-size: 3.5rem; /* 글자 크기 키움 */
+            margin-bottom: 50px;
+            font-size: 3rem;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -31,32 +31,32 @@
         }
         h1::before {
             content: '🥠';
-            font-size: 4rem;
+            font-size: 3.5rem;
         }
 
-        /* 쿠키 선택 화면 스타일 확대 */
+        /* 쿠키 선택 화면 스타일 (유지) */
         #cookie-select-screen {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 50px; /* 항목 간격 대폭 확대 */
+            gap: 40px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
         }
 
         .cookie-item {
-            width: 250px; /* 쿠키 이미지 크기 대폭 확대 */
+            width: 200px;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 30px;
+            border-radius: 25px;
             background-color: white;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         .cookie-item:hover {
-            transform: scale(1.08);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
         }
 
         .cookie-item img {
@@ -64,77 +64,87 @@
             height: auto;
         }
 
-        /* 결과 화면 스타일 확대 */
+        /* 결과 화면 스타일 (수정 및 확대) */
         #result-screen {
             display: none;
-            margin-top: 40px;
+            margin-top: 30px;
             cursor: pointer;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px; /* 최대 폭 확대 */
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* 터치 안내 문구 확대 */
+        /* 터치 안내 문구 대폭 확대 */
         .instruction {
-            color: #e67e22; /* 눈에 띄는 색으로 변경 */
-            font-size: 1.8rem; /* 글자 크기 키움 */
-            margin-bottom: 40px;
+            color: #d35400; /* 더 진한 주황색 */
+            font-size: 2.2rem; /* 글자 크기 대폭 키움 */
+            margin-bottom: 30px;
             font-weight: bold;
             animation: pulse 1.5s infinite;
+            line-height: 1.4;
         }
         @keyframes pulse {
-            0% { opacity: 0.6; }
+            0% { opacity: 0.7; }
             50% { opacity: 1; }
-            100% { opacity: 0.6; }
+            100% { opacity: 0.7; }
         }
 
-        /* 메인 버프 이미지 크기 대폭 확대 */
+        /* 메인 버프 이미지 (족자) 크기 대폭 확대 */
         #main-buff-img {
-            max-width: 90%;
-            width: 600px; /* 이미지 기본 크기 설정 */
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 40px;
-            border: 5px solid white;
+            max-width: 100%;
+            width: 800px; /* 기본 크기 대폭 확대 */
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            margin-bottom: 50px;
+            border: 6px solid white;
+            transition: transform 0.5s ease;
+        }
+        #result-screen:active #main-buff-img {
+            transform: scale(1.02); /* 터치 시 살짝 확대 효과 */
         }
 
-        /* 나머지 버프들이 한꺼번에 뜨는 영역 확대 */
+        /* 나머지 버프들이 한꺼번에 뜨는 영역 (수정 및 확대) */
         #all-buffs-container {
             display: none;
             flex-direction: column;
             align-items: center;
-            gap: 30px; /* 버프 간격 확대 */
-            margin-top: 50px;
+            gap: 40px; /* 버프 간격 확대 */
+            margin-top: 40px;
+            width: 100%;
         }
 
         #all-buffs-container > p {
-            font-size: 2.5rem;
+            font-size: 2.8rem; /* 공개 문구 크기 확대 */
             font-weight: bold;
-            color: #333;
-            margin: 20px 0;
+            color: #444;
+            margin: 10px 0;
+            border-bottom: 3px solid #ccc;
+            padding-bottom: 10px;
         }
 
         .sub-buff-img {
-            max-width: 80%;
-            width: 500px;
+            max-width: 100%;
+            width: 700px; /* 나머지 버프 이미지 크기 확대 */
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            animation: fadeIn 0.7s ease;
-            border: 4px solid white;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            animation: fadeIn 0.8s ease;
+            border: 5px solid white;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 모바일 대응을 위한 미디어 쿼리 */
+        /* 모바일 대응 미디어 쿼리 (수정) */
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; margin-bottom: 40px; }
+            h1 { font-size: 2.5rem; margin-bottom: 30px; }
             #cookie-select-screen { gap: 20px; }
-            .cookie-item { width: 150px; padding: 15px; }
-            .instruction { font-size: 1.2rem; }
-            #main-buff-img { width: 90%; }
-            .sub-buff-img { width: 85%; }
+            .cookie-item { width: 150px; padding: 10px; }
+            .instruction { font-size: 1.8rem; } /* 모바일에서도 크게 유지 */
+            #main-buff-img { width: 95%; } /* 모바일 폭에 맞춤 */
+            .sub-buff-img { width: 92%; } /* 모바일 폭에 맞춤 */
         }
     </style>
 </head>
@@ -142,7 +152,7 @@
 
     <h1>포춘쿠키 버프 뽑기</h1>
 
-    <!-- 1단계: 쿠키 선택 화면 (대폭 확대) -->
+    <!-- 1단계: 쿠키 선택 화면 (크기 유지) -->
     <div id="cookie-select-screen">
         <div class="cookie-item" onclick="pickCookie('행.png', '보호막.png')">
             <img src="행.png" alt="행">
@@ -163,14 +173,14 @@
 
     <!-- 2단계: 결과 및 터치 화면 (대폭 확대) -->
     <div id="result-screen" onclick="revealAllBuffs()">
-        <p class="instruction" id="touch-text">👉 화면을 터치하면 나머지 버프들도 전부 나타납니다!</p>
+        <p class="instruction" id="touch-text">👉 화면을 터치하면 나머지 버프들도<br>전부 나타납니다!</p>
         
-        <!-- 내가 고른 쿠키의 버프 1개 -->
+        <!-- 내가 고른 쿠키의 버프 1개 (대폭 확대) -->
         <div>
             <img id="main-buff-img" src="" alt="선택된 버프">
         </div>
 
-        <!-- 나머지 버프들이 한꺼번에 뜨는 영역 -->
+        <!-- 나머지 버프들이 한꺼번에 뜨는 영역 (대폭 확대) -->
         <div id="all-buffs-container">
             <p>✨ 전체 버프 공개 ✨</p>
             <div id="sub-buffs-list"></div>
@@ -194,7 +204,7 @@
             
             // 화면 전환
             document.getElementById("cookie-select-screen").style.display = "none";
-            document.getElementById("result-screen").style.display = "flex"; // flex로 변경
+            document.getElementById("result-screen").style.display = "flex";
             
             // 선택한 버프 이미지 세팅
             document.getElementById("main-buff-img").src = selectedBuffFile;
