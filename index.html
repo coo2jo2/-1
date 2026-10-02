@@ -9,94 +9,164 @@
             font-family: 'Apple SD Gothic Neo', sans-serif;
             background-color: #f7f9fc;
             text-align: center;
-            padding: 50px;
+            padding: 30px;
             margin: 0;
+            user-select: none;
         }
         h1 {
             color: #333;
+            margin-bottom: 20px;
         }
-        .cookie-container {
-            margin: 40px auto;
+        /* 쿠키 선택 화면 스타일 */
+        #cookie-select-screen {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .cookie-item {
+            width: 120px;
             cursor: pointer;
-            transition: transform 0.1s ease;
+            transition: transform 0.2s ease;
         }
-        .cookie-container:active {
-            transform: scale(0.95);
+        .cookie-item:hover {
+            transform: scale(1.1);
         }
-        .cookie-box {
-            font-size: 80px;
-            background: #fff;
-            border: 2px dashed #ddd;
-            border-radius: 20px;
-            display: inline-block;
-            padding: 30px 50px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        .cookie-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
         }
-        p.instruction {
+
+        /* 결과 화면 스타일 */
+        #result-screen {
+            display: none;
+            margin-top: 20px;
+            cursor: pointer; /* 누를 수 있음을 암시 */
+        }
+        .instruction {
             color: #666;
-            font-size: 16px;
+            font-size: 14px;
+            margin-bottom: 15px;
         }
-        #result-container {
-            margin-top: 30px;
-            min-height: 150px;
-        }
-        #buff-image {
-            max-width: 200px;
-            max-height: 200px;
+        /* 첫 번째로 나온 버프 */
+        #main-buff-img {
+            max-width: 350px;
+            width: 100%;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: none;
-            margin: 0 auto;
+            margin-bottom: 20px;
         }
-        #buff-name {
-            margin-top: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c3e50;
+        /* 나머지 버프들이 한꺼번에 나오는 공간 */
+        #all-buffs-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .sub-buff-img {
+            max-width: 300px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
     <h1>🥠 포춘쿠키 버프 뽑기</h1>
-    <p class="instruction">포춘쿠키를 클릭해서 오늘의 버프를 확인해보세요!</p>
 
-    <div class="cookie-container" onclick="drawBuff()">
-        <div class="cookie-box">🥠</div>
+    <!-- 1단계: 쿠키 선택 화면 -->
+    <div id="cookie-select-screen">
+        <div class="cookie-item" onclick="pickCookie('행.png', '보호막.png')">
+            <img src="행.png" alt="행">
+        </div>
+        <div class="cookie-item" onclick="pickCookie('크행.png', '목점증.png')">
+            <img src="크행.png" alt="크행">
+        </div>
+        <div class="cookie-item" onclick="pickCookie('딸행.png', '한단어면제.png')">
+            <img src="딸행.png" alt="딸행">
+        </div>
+        <div class="cookie-item" onclick="pickCookie('민행.png', '다뽑추.png')">
+            <img src="민행.png" alt="민행">
+        </div>
+        <div class="cookie-item" onclick="pickNameCookie('블행.png', '다뽑차.png')">
+            <img src="블행.png" alt="블행">
+        </div>
     </div>
 
-    <div id="result-container">
-        <img id="buff-image" src="" alt="버프 이미지">
-        <div id="buff-name"></div>
+    <!-- 2단계: 결과 및 터치 화면 -->
+    <div id="result-screen" onclick="revealAllBuffs()">
+        <p class="instruction" id="touch-text">👉 화면을 터치하면 나머지 버프들도 전부 나타납니다!</p>
+        
+        <!-- 내가 고른 쿠키의 버프 1개 -->
+        <div>
+            <img id="main-buff-img" src="" alt="선택된 버프">
+        </div>
+
+        <!-- 나머지 버프들이 한꺼번에 뜨는 영역 -->
+        <div id="all-buffs-container">
+            <p style="font-weight: bold; color: #444; margin: 0;">✨ 전체 버프 공개 ✨</p>
+            <div id="sub-buffs-list"></div>
+        </div>
     </div>
 
     <script>
-        // 이미지 파일명과 버프 이름 목록
-        const buffs = [
-            { name: "행", file: "행.png" },
-            { name: "크행", file: "크행.png" },
-            { name: "딸행", file: "딸행.png" },
-            { name: "민행", file: "민행.png" },
-            { name: "블행", file: "블행.png" },
-            { name: "목점증", file: "목점증.png" },
-            { name: "다뽑추", file: "다뽑추.png" },
-            { name: "보호막", file: "보호막.png" },
-            { name: "한단어면제", file: "한단어면제.png" },
-            { name: "다뽑차", file: "다뽑차.png" }
+        // 전체 버프 목록 데이터베이스 (쿠키 이미지, 버프 이미지 매칭)
+        // ※ 본인의 파일명 규칙에 맞춰서 아래 목록을 자유롭게 수정하셔도 됩니다!
+        const cookieData = [
+            { cookie: "행.png", buff: "보호막.png" },
+            { cookie: "크행.png", buff: "목점증.png" },
+            { cookie: "딸행.png", buff: "한단어면제.png" },
+            { cookie: "민행.png", buff: "다뽑추.png" },
+            { cookie: "블행.png", buff: "다뽑차.png" }
         ];
 
-        function drawBuff() {
-            // 랜덤으로 하나 선택
-            const randomIndex = Math.floor(Math.random() * buffs.length);
-            const selectedBuff = buffs[randomIndex];
+        let revealed = false;
 
-            // 화면에 반영
-            const imgElement = document.getElementById("buff-image");
-            const nameElement = document.getElementById("buff-name");
+        function pickCookie(selectedCookieFile, selectedBuffFile) {
+            revealed = false;
+            
+            // 화면 전환 (쿠키 선택창 숨기고 결과창 띄우기)
+            document.getElementById("cookie-select-screen").style.display = "none";
+            document.getElementById("result-screen").style.display = "block";
+            
+            // 선택한 버프 이미지 세팅
+            document.getElementById("main-buff-img").src = selectedBuffFile;
+            
+            // 나머지 요소 초기화
+            document.getElementById("all-buffs-container").style.display = "none";
+            document.getElementById("touch-text").style.display = "block";
 
-            imgElement.src = selectedBuff.file;
-            imgElement.style.display = "block";
-            nameElement.innerText = `✨ 획득한 버프: ${selectedBuff.name} ✨`;
+            // 선택된 것을 제외한 나머지 버프 목록 미리 준비
+            const subListDiv = document.getElementById("sub-buffs-list");
+            subListDiv.innerHTML = ""; // 초기화
+
+            cookieData.forEach(item => {
+                if (item.buff !== selectedBuffFile) {
+                    const img = document.createElement("img");
+                    img.src = item.buff;
+                    img.className = "sub-buff-img";
+                    subListDiv.appendChild(img);
+                }
+            });
+        }
+
+        // 화면 아무 곳이나 터치했을 때 나머지 버프들 띄우기
+        function revealAllBuffs() {
+            if (!revealed) {
+                revealed = true;
+                document.getElementById("all-buffs-container").style.display = "flex";
+                document.getElementById("touch-text").style.display = "none"; // 안내 문구 숨김
+            }
         }
     </script>
 
