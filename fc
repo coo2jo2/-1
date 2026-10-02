@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포춘쿠키 버프 뽑기</title>
+    <style>
+        body {
+            font-family: 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f7f9fc;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        .cookie-container {
+            margin: 40px auto;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .cookie-container:active {
+            transform: scale(0.95);
+        }
+        .cookie-box {
+            font-size: 80px;
+            background: #fff;
+            border: 2px dashed #ddd;
+            border-radius: 20px;
+            display: inline-block;
+            padding: 30px 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        p.instruction {
+            color: #666;
+            font-size: 16px;
+        }
+        #result-container {
+            margin-top: 30px;
+            min-height: 150px;
+        }
+        #buff-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: none;
+            margin: 0 auto;
+        }
+        #buff-name {
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🥠 포춘쿠키 버프 뽑기</h1>
+    <p class="instruction">포춘쿠키를 클릭해서 오늘의 버프를 확인해보세요!</p>
+
+    <div class="cookie-container" onclick="drawBuff()">
+        <div class="cookie-box">🥠</div>
+    </div>
+
+    <div id="result-container">
+        <img id="buff-image" src="" alt="버프 이미지">
+        <div id="buff-name"></div>
+    </div>
+
+    <script>
+        // 이미지 파일명과 버프 이름 목록
+        const buffs = [
+            { name: "행", file: "행.png" },
+            { name: "크행", file: "크행.png" },
+            { name: "딸행", file: "딸행.png" },
+            { name: "민행", file: "민행.png" },
+            { name: "블행", file: "블행.png" },
+            { name: "목점증", file: "목점증.png" },
+            { name: "다뽑추", file: "다뽑추.png" },
+            { name: "보호막", file: "보호막.png" },
+            { name: "한단어면제", file: "한단어면제.png" },
+            { name: "다뽑차", file: "다뽑차.png" }
+        ];
+
+        function drawBuff() {
+            // 랜덤으로 하나 선택
+            const randomIndex = Math.floor(Math.random() * buffs.length);
+            const selectedBuff = buffs[randomIndex];
+
+            // 화면에 반영
+            const imgElement = document.getElementById("buff-image");
+            const nameElement = document.getElementById("buff-name");
+
+            imgElement.src = selectedBuff.file;
+            imgElement.style.display = "block";
+            nameElement.innerText = `✨ 획득한 버프: ${selectedBuff.name} ✨`;
+        }
+    </script>
+
+</body>
+</html>
